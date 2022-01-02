@@ -16,7 +16,7 @@ class accountRegisterSerializers(serializers.ModelSerializer):
         password = attrs.get('password', "")
 
         if  not password.isalnum():
-            raise serializers.ValidationError("Username must be alphanumeric")
+            raise serializers.ValidationError("password must be alphanumeric")
         # if email and Account.objects.filter(email=email).exists():
         #     raise serializers.ValidationError("Email already exists")
         # if username and Account.objects.filter(username=username).exists():
