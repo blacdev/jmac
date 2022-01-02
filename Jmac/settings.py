@@ -154,3 +154,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # EMAIL_PORT = env('EMAIL_PORT')
 
 
+django_heroku.settings(locals())
