@@ -33,7 +33,7 @@ EMAIL_HOST_PASSWORD = "your account's password"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["https://jmac-test.herokuapp.com/"]
 
 
 
