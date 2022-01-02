@@ -6,7 +6,7 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, Permis
 class myAccountmanagaer(BaseUserManager):
     def create_user(self, email, username, password=None):
         if not email:
-            raise ValueError("User must have an email address")
+            raise ValueError("User must have an email")
         if not username:
             raise ValueError("User must have a username")
 
@@ -15,7 +15,7 @@ class myAccountmanagaer(BaseUserManager):
             username = username,
         )
         user.set_password(password)
-        user.save(using=self._db)
+        user.save()
         return user
 
     def create_superuser(self, email, username, password):
@@ -34,14 +34,14 @@ class myAccountmanagaer(BaseUserManager):
         user.is_admin = True
         user.is_staff = True
         user.is_superuser = True
-        user.save(using=self._db)
+        user.save()
         return user
 
 
 class Accounts(AbstractBaseUser, PermissionsMixin):
     id               = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    email            = models.EmailField(verbose_name="email", max_length=60, unique=True)
-    username         = models.CharField(max_length=30, unique=True)
+    email            = models.EmailField(verbose_name="email", max_length=255, unique=True)
+    username         = models.CharField(max_length=255, unique=True, db_index=True)
     date_joined      = models.DateTimeField(verbose_name="date joined", auto_now_add=True)
     last_login       = models.DateTimeField(verbose_name="last login", auto_now=True)
     is_admin         = models.BooleanField(default=False)
@@ -49,7 +49,6 @@ class Accounts(AbstractBaseUser, PermissionsMixin):
     is_staff         = models.BooleanField(default=False)
     is_superuser     = models.BooleanField(default=False)
     is_verified      = models.BooleanField(default=False)
-    
 
     objects = myAccountmanagaer()
 
@@ -66,7 +65,7 @@ class Accounts(AbstractBaseUser, PermissionsMixin):
         return True
 
     def token(self):
-        return self.id
+        return ""
 
 
 
