@@ -3,3 +3,6 @@
 *sqlite3
 __pycache__/
  *.pyc
+ /home/blac/Documents/MY-PROJECT/I4G_Hackathon/account/__pycache__/
+ /home/blac/Documents/MY-PROJECT/I4G_Hackathon/account/migrations/__pycache__/
+ /home/blac/Documents/MY-PROJECT/I4G_Hackathon/Jmac/__pycache__/
