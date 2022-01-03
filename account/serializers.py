@@ -51,6 +51,7 @@ class loginSerializers(serializers.ModelSerializer):
         password = attrs.get('password', "")
 
         user = auth.authenticate(email=email, password=password)
+        print(user)
         
         if user is None:
             raise AuthenticationFailed("Invalid credentials")
