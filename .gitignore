@@ -1,3 +1,4 @@
 *read.me
 *.env
 *sqlite3
+*__pycache__
