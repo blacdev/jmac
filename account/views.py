@@ -36,18 +36,15 @@ class accountRegisterView(generics.GenericAPIView):
             email_body = "hi " + user.username + "\n, please use this link below to verify your email. \n" + absUrls
             Email_data = {"email_body":email_body, "to_email":user.email, "email_subject":"Verify your email address",}
             Util.send_email(Email_data)
-            if Util.send_email(Email_data):
-                data = {"message":"A verification email has been sent to your email address.",
-                        # "username":user_data["username"],
-                        # "email":user_data["email"],
-                        # "token": token
-                    }
-                return Response(data, status=status.HTTP_201_CREATED)
-            # else:
-            #     data = {"message":"Email could not be sent"}
-            #     return Response(data, status=status.HTTP_400_BAD_REQUEST)
-        # else:
-        #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            Util.send_email(Email_data)
+            data = {"message":"A verification email has been sent to your email address.",
+                    # "username":user_data["username"],
+                    # "email":user_data["email"],
+                    # "token": token
+                }
+            return Response(data, status=status.HTTP_201_CREATED)
+        data = {"message":"Email could not be sent"}
+        return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
 
 class VerifyEmail(views.APIView):
