@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from rest_framework import generics, status, views
-from .serializers import accountRegisterSerializers, EmailVerificationSerializer
+from rest_framework import serializers
+from rest_framework.serializers import Serializer
+from .serializers import accountRegisterSerializers, EmailVerificationSerializer, loginSerializers
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from .models import Accounts
@@ -20,27 +22,32 @@ class accountRegisterView(generics.GenericAPIView):
     def post(self, request, *args, **kwargs):
         user  = request.data
         serializer = self.get_serializer(data=user)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        user_data = serializer.data
-        print(user_data) # to deletelater
-        user = Accounts.objects.get(username = user_data["username"],email=user_data['email'])
-        print(user) # to deletelater
-        print(user.id) # to deletelater
-        token = RefreshToken.for_user(user).access_token
-
-        current_site = get_current_site(request).domain
-        relative_url = reverse("account-email-verify")
-        absUrls = "http://" + current_site + relative_url + "?token=" + str(token)
-        email_body = "hi " + user.username + "\n, please use this link below to verify your email. \n" + absUrls
-
-        data = {"email_body":email_body, "to_email":user.email, "email_subject":"Verify your email address",}
-        Util.send_email(data)
-        # if Util.send_email(data):
-        #     return Response({"message":"A verification email has been sent to your email address."}, status=status.HTTP_200_OK)
-        
-
-        return Response(user_data, status=status.HTTP_201_CREATED)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            user_data = serializer.data
+            print(user_data) # to deletelater
+            user = Accounts.objects.get(username = user_data["username"],email=user_data['email'])
+            print(user) # to deletelater
+            print(user.id) # to deletelater
+            token = RefreshToken.for_user(user).access_token
+            current_site = get_current_site(request).domain
+            relative_url = reverse("account-email-verify")
+            absUrls = "http://" + current_site + relative_url + "?token=" + str(token)
+            email_body = "hi " + user.username + "\n, please use this link below to verify your email. \n" + absUrls
+            Email_data = {"email_body":email_body, "to_email":user.email, "email_subject":"Verify your email address",}
+            Util.send_email(Email_data)
+            if Util.send_email(Email_data):
+                data = {"message":"A verification email has been sent to your email address.",
+                        # "username":user_data["username"],
+                        # "email":user_data["email"],
+                        # "token": token
+                    }
+                return Response(data, status=status.HTTP_201_CREATED)
+            else:
+                data = {"message":"Email could not be sent"}
+                return Response(data, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class VerifyEmail(views.APIView):
@@ -68,6 +75,13 @@ class VerifyEmail(views.APIView):
             return Response({"Error":"Invalid token"}, status=status.HTTP_400_BAD_REQUEST)
 
 
+class LoginView(generics.GenericAPIView):
+    serializer_class = loginSerializers
 
 
-
+    def post(self, request, *args, **kwargs):
+        serializers = self.serializer_class(data=request.data)
+        serializers.is_valid(raise_exception=True)
+        
+        return Response(serializers.data, status=status.HTTP_200_OK)
+        
