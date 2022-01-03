@@ -24,7 +24,8 @@ class accountRegisterView(generics.GenericAPIView):
         serializer.save()
         user_data = serializer.data
         print(user_data)
-        user = Accounts.objects.get(id =user_data["id"] ,email=user_data['email'])
+        user = Accounts.objects.get(email=user_data['email'])
+        print(user)
         token = RefreshToken.for_user(user).access_token
 
         current_site = get_current_site(request).domain
