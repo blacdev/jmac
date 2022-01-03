@@ -43,11 +43,11 @@ class accountRegisterView(generics.GenericAPIView):
                         # "token": token
                     }
                 return Response(data, status=status.HTTP_201_CREATED)
-            else:
-                data = {"message":"Email could not be sent"}
-                return Response(data, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            # else:
+            #     data = {"message":"Email could not be sent"}
+            #     return Response(data, status=status.HTTP_400_BAD_REQUEST)
+        # else:
+        #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class VerifyEmail(views.APIView):
@@ -82,6 +82,6 @@ class LoginView(generics.GenericAPIView):
     def post(self, request, *args, **kwargs):
         serializers = self.serializer_class(data=request.data)
         serializers.is_valid(raise_exception=True)
-        
+
         return Response(serializers.data, status=status.HTTP_200_OK)
         
