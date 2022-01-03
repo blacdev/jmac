@@ -23,9 +23,10 @@ class accountRegisterView(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         user_data = serializer.data
-        print(user_data)
+        print(user_data) # to deletelater
         user = Accounts.objects.get(email=user_data['email'])
-        print(user)
+        print(user) # to deletelater
+        print(user.id) # to deletelater
         token = RefreshToken.for_user(user).access_token
 
         current_site = get_current_site(request).domain
