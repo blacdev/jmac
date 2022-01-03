@@ -14,6 +14,7 @@ class accountRegisterSerializers(serializers.ModelSerializer):
         email = attrs.get('email', "")
         username = attrs.get('username', "")
         password = attrs.get('password', "")
+        id = attrs.get('id', "")
 
         if  not password.isalnum():
             raise serializers.ValidationError("password must be alphanumeric")

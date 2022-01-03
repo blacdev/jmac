@@ -27,7 +27,7 @@ class accountRegisterView(generics.GenericAPIView):
         user = Accounts.objects.get(email=user_data['email'])
         print(user) # to deletelater
         print(user.id) # to deletelater
-        token = RefreshToken.for_user(user.id).access_token
+        token = RefreshToken.for_user(user).access_token
 
         current_site = get_current_site(request).domain
         relative_url = reverse("account-email-verify")
