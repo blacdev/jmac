@@ -39,7 +39,7 @@ class EmailVerificationSerializer(serializers.ModelSerializer):
 
 class loginSerializers(serializers.ModelSerializer):
     email       = serializers.EmailField(max_length=255)
-    password    = serializers.CharField(min_length = 8, max_length = 68)
+    password    = serializers.CharField(min_length = 8, max_length = 68, write_only=True)
     username    = serializers.CharField(max_length = 255, read_only=True)
     tokens      = serializers.CharField(min_length = 8,  read_only=True)
     class Meta:
@@ -57,7 +57,6 @@ class loginSerializers(serializers.ModelSerializer):
             raise AuthenticationFailed("Invalid credentials")
 
         if not user.is_active is not True:
-            
             raise AuthenticationFailed("Account disabled, please contact admin")
         
         if user.is_verified is not True:
@@ -67,5 +66,8 @@ class loginSerializers(serializers.ModelSerializer):
         return {
             'email': user.email,
             'username': user.username,
-            "token": user.token,
+            "token": user.tokens,
         }
+
+
+        return super().validate(attrs)
