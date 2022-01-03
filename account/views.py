@@ -27,7 +27,7 @@ class accountRegisterView(generics.GenericAPIView):
         user = Accounts.objects.get(email=user_data['email'])
         print(user) # to deletelater
         print(user.id) # to deletelater
-        token = RefreshToken.for_user(user).access_token
+        token = RefreshToken.for_user(user.id).access_token
 
         current_site = get_current_site(request).domain
         relative_url = reverse("account-email-verify")
@@ -54,7 +54,10 @@ class VerifyEmail(views.APIView):
         
         try:
             payload = jwt.decode(token, settings.SECRET_KEY)
-            user = Accounts.objects.get(id=payload['user_id'])
+            print(payload)
+            user = Accounts.objects.get(id=payload['user.email'])
+            print(user)
+            print(user.id)
             if  not user.is_verified:
                 user.is_verified = True
                 user.save()
