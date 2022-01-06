@@ -54,7 +54,7 @@ class Accounts(AbstractBaseUser, PermissionsMixin):
     objects = myAccountmanagaer()
 
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ["email","password"]
+    REQUIRED_FIELDS = ["password"]
 
     def __str__(self):
         return self.username

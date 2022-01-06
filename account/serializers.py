@@ -53,7 +53,7 @@ class loginSerializers(serializers.ModelSerializer):
         print(password)
 
         user = auth.authenticate(email=email, password=password)
-        print("Existing usre", user)
+        print("Existing user", user)
         
         if user is None:
             raise AuthenticationFailed("Invalid credentials")
