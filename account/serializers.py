@@ -1,6 +1,6 @@
 from .models import Accounts
 from rest_framework import serializers
-from django.contrib import auth 
+from django.contrib.auth import authenticate
 from rest_framework.exceptions import AuthenticationFailed
 
 class accountRegisterSerializers(serializers.ModelSerializer):
@@ -52,7 +52,7 @@ class loginSerializers(serializers.ModelSerializer):
         password = attrs.get('password', "")
         print(password)
 
-        user = auth.authenticate(email=email, password=password)
+        user = authenticate(request = self.context.get("request"),  email=email, password=password)
         print("Existing user", user)
         
         if user is None:
