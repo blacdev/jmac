@@ -21,7 +21,7 @@ class accountRegisterView(generics.GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         user  = request.data
-        serializer = self.get_serializer(data=user)
+        serializer = self.get_serializer(data=user) 
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             user_data = serializer.data
@@ -77,9 +77,9 @@ class LoginView(generics.GenericAPIView):
     serializer_class = loginSerializers
 
 
-    def post(self, request, *args, **kwargs):
-        serializers = self.serializer_class(data=request.data)
-        serializers.is_valid(raise_exception=True)
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
 
-        return Response(serializers.data, status=status.HTTP_200_OK)
+        return Response(serializer.data, status=status.HTTP_200_OK)
         

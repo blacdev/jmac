@@ -53,6 +53,7 @@ class Accounts(AbstractBaseUser, PermissionsMixin):
 
     objects = myAccountmanagaer()
 
+    EMAIL_FIELD = 'email'
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ["username"]
 
@@ -74,8 +75,8 @@ class Accounts(AbstractBaseUser, PermissionsMixin):
 
 
 
-class accountInfo(Accounts):
-    user            = models.OneToOneField(Accounts, on_delete=models.CASCADE, primary_key=True, related_name="User")
+class accountInfo(models.Model):
+    user            = models.ForeignKey(Accounts, on_delete=models.CASCADE)
     bank_name       = models.CharField(max_length=30, blank=True)
     account_number  = models.CharField(max_length=30, blank=True)
     account_name    = models.CharField(max_length=30, blank=True)
