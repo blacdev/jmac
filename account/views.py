@@ -66,6 +66,7 @@ class VerifyEmail(views.APIView):
             if   (user.is_verified == False) and (user.is_active == False):
                 user.is_verified = True
                 user.is_active = True
+                print(user.is_verified)
                 user.save()
             return Response({"Emial":"Sucessfully activated"}, status=status.HTTP_200_OK)
         except jwt.ExpiredSignatureError as identifier:
