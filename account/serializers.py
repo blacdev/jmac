@@ -38,11 +38,11 @@ class EmailVerificationSerializer(serializers.ModelSerializer):
         fields = ('token',)
 
 class loginSerializers(serializers.ModelSerializer):
-    
+
     password    = serializers.CharField(min_length = 8, max_length = 68, write_only=True)
     class Meta:
         model = Accounts
-        fields = ['password', "username", "token"]
+        fields = ["username",'password', "token"]
 
     def validate(self, attrs):
         username = attrs.get('username', "")

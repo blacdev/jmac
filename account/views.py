@@ -62,7 +62,8 @@ class VerifyEmail(views.APIView):
             user = Accounts.objects.get(id=payload['user_id'])
             print(user)
             print(user.id)
-            if  not (user.is_verified) and (not user.is_active):
+            print(user.is_verified)
+            if   (user.is_verified == False) and (user.is_active == False):
                 user.is_verified = True
                 user.is_active = True
                 user.save()
