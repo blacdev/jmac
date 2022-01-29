@@ -90,7 +90,7 @@ user_response = openapi.Response('response description', MonoUserExchangeSeriali
 @api_view(['GET'])
 def UserInfoAPIView(request):
 
-    data = request.data
+    data = request.GET.get('id')
     print(data)
     serializer = MonoUserInformationSerializer(data = data) 
 
