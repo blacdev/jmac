@@ -54,7 +54,7 @@ from userbankaccount.serializers import *
     operation_summary="Creates and get messages",
     responses={200: "Success:succes", 400: "Error: Bad Request"},)
 @api_view(['POST'])
-def UserExchangeAPIView(self, request):
+def UserExchangeAPIView(request):
 
     data = request.data
     serializer = UserExchangeSerializer(data) 
