@@ -60,6 +60,7 @@ def UserExchangeAPIView(self, request):
     if serializer.is_valid(raise_exception=True):
         
         data = serializer.data
+        print(data)
         url = "https://api.withmono.com/account/auth"
 
         payload = {"code": data["code"]}
