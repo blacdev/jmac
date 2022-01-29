@@ -85,7 +85,7 @@ def UserExchangeAPIView(request):
 
 
 test_param = openapi.Parameter('id', openapi.IN_QUERY, description="user bank id", type=openapi.TYPE_STRING)
-user_response = openapi.Response('response description', MonoUserExchangeSerializer)
+user_response = openapi.Response('response description', MonoUserInformationSerializer)
 @swagger_auto_schema(method='get', manual_parameters=[test_param], responses={200: user_response})
 @api_view(['GET'])
 def UserInfoAPIView(request):
