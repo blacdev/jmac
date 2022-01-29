@@ -90,7 +90,7 @@ def UserExchangeAPIView(request):
     operation_summary="Creates and get messages",
     responses={201: "Success:succes", 400: "Error: Bad Request"},
 )
-@api_view(['GET',])
+@api_view(['GET',"POST"])
 def UserInfoAPIView(request, id):
 
     data = request.GET.dict()
