@@ -75,16 +75,6 @@ class Accounts(AbstractBaseUser, PermissionsMixin):
 
 
 
-class accountInfo(models.Model):
-    user            = models.ForeignKey(Accounts, on_delete=models.CASCADE)
-    bank_name       = models.CharField(max_length=30, blank=True)
-    account_number  = models.CharField(max_length=30, blank=True)
-    account_name    = models.CharField(max_length=30, blank=True)
-    account_type    = models.CharField(max_length=30, blank=True)
-
-
-    def __str__(self):
-        return self.user
 
 
     # interface User {

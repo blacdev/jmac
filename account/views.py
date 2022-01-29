@@ -17,6 +17,16 @@ from drf_yasg import openapi
 # Create your views here.
 
 class accountRegisterView(generics.GenericAPIView):
+    """
+    This endpoint allows you to register a new user.
+    With the following data:
+    {
+        "username": "username",
+        "email": "user email",
+        "password": "user password"
+    }
+    The repons is a messge that tells you if that an email has been sent to your email address.
+    """
     serializer_class = accountRegisterSerializers
 
     def post(self, request, *args, **kwargs):
@@ -38,9 +48,7 @@ class accountRegisterView(generics.GenericAPIView):
             Util.send_email(Email_data)
             Util.send_email(Email_data)
             data = {"message":"A verification email has been sent to your email address.",
-                    # "username":user_data["username"],
-                    # "email":user_data["email"],
-                    # "token": token
+
                 }
             return Response(data, status=status.HTTP_201_CREATED)
         data = {"message":"Email could not be sent"}
@@ -50,7 +58,7 @@ class accountRegisterView(generics.GenericAPIView):
 class VerifyEmail(views.APIView):
     serializer_class = EmailVerificationSerializer
 
-    token_param_config = openapi.Parameter("Token", in_=openapi.IN_QUERY, description="token", type=openapi.TYPE_STRING)
+    token_param_config = openapi.Parameter("token", in_=openapi.IN_QUERY, description="token", type=openapi.TYPE_STRING)
 
     @swagger_auto_schema(manual_parameters=[token_param_config])
     def get(self, request, *args, **kwargs):
@@ -83,7 +91,6 @@ class LoginView(generics.GenericAPIView):
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
-        print(serializer.data)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
         

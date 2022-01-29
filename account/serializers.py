@@ -5,7 +5,7 @@ from rest_framework.exceptions import AuthenticationFailed
 
 class accountRegisterSerializers(serializers.ModelSerializer):
 
-    password = serializers.CharField(min_length = 8, max_length = 68, write_only=True)
+    password = serializers.CharField(min_length = 6, max_length = 68, write_only=True)
 
     class Meta:
         model = Accounts
@@ -39,7 +39,7 @@ class EmailVerificationSerializer(serializers.ModelSerializer):
 
 class loginSerializers(serializers.ModelSerializer):
 
-    password    = serializers.CharField(min_length = 8, max_length = 68, write_only=True)
+    password    = serializers.CharField(min_length = 6, max_length = 68, write_only=True)
     id          = serializers.CharField(read_only=True)
     email       = serializers.EmailField(read_only=True)
     class Meta:
@@ -58,10 +58,10 @@ class loginSerializers(serializers.ModelSerializer):
         if user is None:
             raise AuthenticationFailed("Invalid credentials")
 
-        if user.is_active is not True:
+        if not user.is_active:
             raise AuthenticationFailed("Account disabled, please contact admin")
         
-        if user.is_verified is not True:
+        if not user.is_verified:
             print(user.is_verified)
             raise AuthenticationFailed("Email is not verified")
 
@@ -73,4 +73,3 @@ class loginSerializers(serializers.ModelSerializer):
         }
 
 
-        return super().validate(attrs)
