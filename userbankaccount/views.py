@@ -88,9 +88,10 @@ test_param = openapi.Parameter('id', openapi.IN_QUERY, description="user bank id
 user_response = openapi.Response('response description', MonoUserInformationSerializer)
 @swagger_auto_schema(method='get', manual_parameters=[test_param], responses={200: user_response})
 @api_view(['GET'])
-def UserInfoAPIView(request):
+def UserInfoAPIView(request, id):
 
-    data = request.GET.get('id')
+    data = request.data
+    id = data.get('id',"")
     print(data)
     serializer = MonoUserInformationSerializer(data = data) 
 
@@ -98,7 +99,7 @@ def UserInfoAPIView(request):
         
         
         print(data)
-        url = "https://api.withmono.com/account/"+ data["id"]
+        url = "https://api.withmono.com/account/"+ id
 
         headers = {
             "Accept": "application/json",
