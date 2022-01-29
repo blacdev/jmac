@@ -57,7 +57,8 @@ from userbankaccount.serializers import *
 def UserExchangeAPIView(request):
 
     data = request.data
-    serializer = UserExchangeSerializer(data) 
+    print(data)
+    serializer = UserExchangeSerializer(data = data) 
 
     if serializer.is_valid(raise_exception=True):
         
