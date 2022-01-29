@@ -84,14 +84,17 @@ def UserExchangeAPIView(request):
 
 
 
-test_param = openapi.Parameter('id', openapi.IN_QUERY, description="user bank id", type=openapi.TYPE_STRING)
-user_response = openapi.Response('response description', MonoUserInformationSerializer)
-@swagger_auto_schema(method='get', manual_parameters=[test_param], responses={200: user_response})
-@api_view(['GET'])
+@swagger_auto_schema(
+    methods=["post", "get"],
+    query_serializer=MonoUserInformationSerializer,
+    operation_summary="Creates and get messages",
+    responses={201: "Success:succes", 400: "Error: Bad Request"},
+)
+@api_view(['GET',])
 def UserInfoAPIView(request, id):
 
-    data = request.data
-    id = data.get('id',"")
+    data = request.GET.dict()
+    id = request.GET.get('id',"")
     print(data)
     serializer = MonoUserInformationSerializer(data = data) 
 
