@@ -50,7 +50,7 @@ from userbankaccount.serializers import *
 
 @swagger_auto_schema(
     methods=["post"],
-    request_body=UserExchangeSerializer,
+    request_body=MonoUserExchangeSerializer,
     operation_summary="Creates and get messages",
     responses={200: "Success:succes", 400: "Error: Bad Request"},)
 @api_view(['POST'])
@@ -58,7 +58,7 @@ def UserExchangeAPIView(request):
 
     data = request.data
     print(data)
-    serializer = UserExchangeSerializer(data = data) 
+    serializer = MonoUserExchangeSerializer(data = data) 
 
     if serializer.is_valid(raise_exception=True):
         
@@ -84,4 +84,32 @@ def UserExchangeAPIView(request):
 
 
 
+test_param = openapi.Parameter('id', openapi.IN_QUERY, description="user bank id", type=openapi.TYPE_STRING)
+user_response = openapi.Response('response description', MonoUserExchangeSerializer)
+@swagger_auto_schema(method='get', manual_parameters=[test_param], responses={200: user_response})
+@api_view(['GET'])
+def UserInfoAPIView(request):
 
+    data = request.data
+    print(data)
+    serializer = MonoUserInformationSerializer(data = data) 
+
+    if serializer.is_valid(raise_exception=True):
+        
+        
+        print(data)
+        url = "https://api.withmono.com/account/"+ data["id"]
+
+        headers = {
+            "Accept": "application/json",
+            "mono-sec-key": os.environ.get("MONO_SEC_KEY") ,
+            "Content-Type": "application/json"
+        }
+
+        response = requests.request("GET", url, headers=headers)
+        print(response)
+        
+        
+
+        return Response(response, status=status.HTTP_200_OK)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

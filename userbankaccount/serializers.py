@@ -8,5 +8,9 @@ class Add_List_AccountSerializer(serializers.ModelSerializer):
         fields = ['account_id', 'bank_name', 'bank_account_number', 'bank_account_name', 'bank_account_type']
 
 
-class UserExchangeSerializer(serializers.Serializer):
+class MonoUserExchangeSerializer(serializers.Serializer):
     code = serializers.CharField(max_length=255)
+
+
+class MonoUserInformationSerializer(serializers.Serializer):
+    id = serializers.CharField(max_length=255)
