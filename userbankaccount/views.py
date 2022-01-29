@@ -55,11 +55,13 @@ from userbankaccount.serializers import *
     responses={200: "Success:succes", 400: "Error: Bad Request"},)
 @api_view(['POST'])
 def UserExchangeAPIView(self, request):
-    serializer = UserExchangeSerializer(request.data) 
+
+    data = request.data
+    serializer = UserExchangeSerializer(data) 
 
     if serializer.is_valid(raise_exception=True):
         
-        data = serializer.data
+        
         print(data)
         url = "https://api.withmono.com/account/auth"
 
