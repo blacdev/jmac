@@ -93,27 +93,47 @@ def UserExchangeAPIView(request):
 @api_view(['GET',"POST"])
 def UserInfoAPIView(request, id):
 
-    data = request.GET.dict()
-    id = request.GET.get('id',"")
-    print(data)
-    serializer = MonoUserInformationSerializer(data = data) 
-
-    if serializer.is_valid(raise_exception=True):
-        
-        
+    if request.method == "POST":
+        data = request.data
+        id = data["id"]
         print(data)
-        url = "https://api.withmono.com/account/"+ id
+        serializer = MonoUserInformationSerializer(data = id) 
 
-        headers = {
-            "Accept": "application/json",
-            "mono-sec-key": os.environ.get("MONO_SEC_KEY") ,
-            "Content-Type": "application/json"
-        }
+        if serializer.is_valid(raise_exception=True):
+            
 
-        response = requests.request("GET", url, headers=headers)
-        print(response)
-        
-        
+            url = "https://api.withmono.com/account/"+ id
 
-        return Response(response, status=status.HTTP_200_OK)
+            headers = {
+                "Accept": "application/json",
+                "mono-sec-key": os.environ.get("MONO_SEC_KEY") ,
+                "Content-Type": "application/json"
+            }
+
+            response = requests.request("GET", url, headers=headers)
+            print(response)
+            
+            
+
+            return Response(response, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    if request.method == "GET":
+        accounts = BankaccountInfo.objects.all()
+        serializer = List_AccountSerializer(accounts, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+# class Add_List_AccountAPIView(ListCreateAPIView):
+#     Serializer_class = Add_List_AccountSerializer
+#     queryset = BankaccountInfo.objects.all()
+#     permissions_classes = (permissions.IsAuthenticated,)
+
+    
+#     def perform_create(self, serializer):
+#         return serializer.save(user=self.request.user)
+
+#     def get_queryset(self):
+#         return self.queryset.filter(user=self.request.user)

@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from userbankaccount.models import BankaccountInfo
 
-class Add_List_AccountSerializer(serializers.ModelSerializer):
+class List_AccountSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BankaccountInfo
@@ -14,3 +14,4 @@ class MonoUserExchangeSerializer(serializers.Serializer):
 
 class MonoUserInformationSerializer(serializers.Serializer):
     id = serializers.CharField(max_length=255)
+
