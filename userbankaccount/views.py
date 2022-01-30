@@ -99,7 +99,7 @@ def UserInfoAPIView(request, id):
         if serializer.is_valid(raise_exception=True):
             
 
-            url = "https://api.withmono.com/account/"+ data["id"]
+            url = "https://api.withmono.com/accounts/"+ data["id"]
 
             headers = {
                 "Accept": "application/json",
