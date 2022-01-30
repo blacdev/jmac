@@ -85,49 +85,39 @@ def UserExchangeAPIView(request):
 
 
 @swagger_auto_schema(
-    methods=["post", "get"],
-    query_serializer=MonoUserInformationSerializer,
+    methods=[ "get"],
     operation_summary="Creates and get messages",
     responses={201: "Success:succes", 400: "Error: Bad Request"},
 )
-@api_view(['GET',"POST"])
+@api_view(["GET"])
 def UserInfoAPIView(request, id):
 
-    if request.method == "POST":
-        data = request.data
-        id = data["id"]
-        print(data)
-        serializer = MonoUserInformationSerializer(data = id) 
+    if request.method == "GET":
+        data = {"id": id}
+        serializer = MonoUserInformationSerializer(data = data) 
 
         if serializer.is_valid(raise_exception=True):
             
 
-            url = "https://api.withmono.com/account/"+ id
+            url = "https://api.withmono.com/account/"+ data["id"]
 
             headers = {
                 "Accept": "application/json",
                 "mono-sec-key": os.environ.get("MONO_SEC_KEY") ,
                 "Content-Type": "application/json"
             }
-
+            
             response = requests.request("GET", url, headers=headers)
             print(response)
-            
-            
-
-            return Response(response, status=status.HTTP_200_OK)
+            if response == "200":
+                return Response(response, status=status.HTTP_200_OK)
+            return Response(data= "User not authorised", status=status.HTTP_401_UNAUTHORIZED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-    if request.method == "GET":
-        accounts = BankaccountInfo.objects.all()
-        serializer = List_AccountSerializer(accounts, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 
 # class Add_List_AccountAPIView(ListCreateAPIView):
-#     Serializer_class = Add_List_AccountSerializer
+#     Serializer_class = List_AccountSerializer
 #     queryset = BankaccountInfo.objects.all()
 #     permissions_classes = (permissions.IsAuthenticated,)
 
