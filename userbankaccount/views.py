@@ -35,7 +35,6 @@
 #     def get_queryset(self):
 #         return self.queryset.filter(user=self.request.user)
 
-from matplotlib.pyplot import get
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
@@ -43,7 +42,6 @@ from rest_framework.decorators import api_view
 import os
 import requests
 from drf_yasg.utils import swagger_auto_schema 
-from drf_yasg import openapi
 from rest_framework import status
 from account.models import Accounts
 
