@@ -12,6 +12,8 @@ class BankaccountInfo(models.Model):
     bank_account_name    = models.CharField(max_length=30, null=False, blank=False)
     bank_account_type    = models.CharField(max_length=30, null=False, blank=False)
     user_bvn             = models.CharField(max_length=255, null=False, blank=False)
+    bank_code            = models.CharField(max_length=255, null=False, blank=False)
+    bank_type            = models.CharField(max_length=255, null=False, blank=False)
 
 
     def __str__(self):

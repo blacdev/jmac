@@ -35,6 +35,7 @@
 #     def get_queryset(self):
 #         return self.queryset.filter(user=self.request.user)
 
+from matplotlib.pyplot import get
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
@@ -44,6 +45,7 @@ import requests
 from drf_yasg.utils import swagger_auto_schema 
 from drf_yasg import openapi
 from rest_framework import status
+from account.models import Accounts
 
 from userbankaccount.serializers import *
 
@@ -87,10 +89,9 @@ def UserExchangeAPIView(request):
 @swagger_auto_schema(
     methods=[ "get"],
     operation_summary="Creates and get messages",
-    responses={201: "Success:succes", 400: "Error: Bad Request"},
-)
+    responses={200: "Success:succes", 400: "Error: Bad Request"},)
 @api_view(["GET"])
-def UserInfoAPIView(request, id):
+def UserInfoAPIView(request, id, user_id):
 
     if request.method == "GET":
         data = {"id": id}
@@ -100,6 +101,7 @@ def UserInfoAPIView(request, id):
             
 
             url = "https://api.withmono.com/accounts/"+ data["id"]
+            print(os.environ.get("MONO_SEC_KEY"))
 
             headers = {
                 "Accept": "application/json",
@@ -108,22 +110,22 @@ def UserInfoAPIView(request, id):
             }
             
             response = requests.request("GET", url, headers=headers)
-            print(response)
-            if response == "200":
-                return Response(response, status=status.HTTP_200_OK)
+            print(response.json())
+            user = Accounts.objects.get(id=user_id)
+            print(response.text)
+            if response.status_code == 200:
+                data = {"account_id": id,
+                        "bank_name": response.json()["account"]["institution"]["name"],
+                        "bank_code": response.json()["account"]["institution"]["bankCode"],
+                        "bank_type": response.json()["account"]["institution"]["type"],
+                        "bank_account_number": response.json()["account"]["accountNumber"],
+                        "bank_account_name": response.json()["account"]["name"],
+                        "bank_account_type": response.json()["account"]["type"],
+                        "user": user,
+                        "user_bvn": response.json()["account"]["bvn"]}
+                print(data)
+                serializer = List_AccountSerializer(data = data)
+                if serializer.is_valid():serializer.save(user=request.user)
+                return Response(response.text, status=status.HTTP_200_OK)
             return Response(data= "User not authorised", status=status.HTTP_401_UNAUTHORIZED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-
-# class Add_List_AccountAPIView(ListCreateAPIView):
-#     Serializer_class = List_AccountSerializer
-#     queryset = BankaccountInfo.objects.all()
-#     permissions_classes = (permissions.IsAuthenticated,)
-
-    
-#     def perform_create(self, serializer):
-#         return serializer.save(user=self.request.user)
-
-#     def get_queryset(self):
-#         return self.queryset.filter(user=self.request.user)
