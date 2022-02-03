@@ -112,7 +112,6 @@ def UserInfoAPIView(request, id, user_id):
             print(response.json())
             users = Accounts.objects.get(id=user_id)
             BankaccountInfo.user = users
-            print(response.text)
             if response.status_code == 200:
                 data = {"account_id": id,
                         "bank_name": response.json()["account"]["institution"]["name"],
@@ -122,7 +121,7 @@ def UserInfoAPIView(request, id, user_id):
                         "bank_account_name": response.json()["account"]["name"],
                         "bank_account_type": response.json()["account"]["type"],
                         "user_bvn": response.json()["account"]["bvn"]}
-                print(data)
+                print("data printed",data)
                 serializer = List_AccountSerializer(data = data)
                 if serializer.is_valid():
                     serializer.save()
