@@ -21,4 +21,5 @@ class MonoUserExchangeSerializer(serializers.Serializer):
 
 class MonoUserInformationSerializer(serializers.Serializer):
     id = serializers.CharField(max_length=255)
+    user_id = serializers.CharField(max_length=255)
 
