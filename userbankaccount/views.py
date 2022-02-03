@@ -110,7 +110,8 @@ def UserInfoAPIView(request, id, user_id):
             
             response = requests.request("GET", url, headers=headers)
             print(response.json())
-            user = Accounts.objects.get(id=user_id)
+            users = Accounts.objects.get(id=user_id)
+            BankaccountInfo.user = users
             print(response.text)
             if response.status_code == 200:
                 data = {"account_id": id,
@@ -120,11 +121,13 @@ def UserInfoAPIView(request, id, user_id):
                         "bank_account_number": response.json()["account"]["accountNumber"],
                         "bank_account_name": response.json()["account"]["name"],
                         "bank_account_type": response.json()["account"]["type"],
-                        "user": user,
+                        # "user": user,
                         "user_bvn": response.json()["account"]["bvn"]}
                 print(data)
                 serializer = List_AccountSerializer(data = data)
-                if serializer.is_valid():serializer.save(user=request.user)
+                if serializer.is_valid():
+                    serializer.save()
+                    return Response(serializer.data, status=status.HTTP_200_OK)
                 return Response(response.text, status=status.HTTP_200_OK)
             return Response(data= "User not authorised", status=status.HTTP_401_UNAUTHORIZED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
