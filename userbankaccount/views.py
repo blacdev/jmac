@@ -121,7 +121,6 @@ def UserInfoAPIView(request, id, user_id):
                         "bank_account_number": response.json()["account"]["accountNumber"],
                         "bank_account_name": response.json()["account"]["name"],
                         "bank_account_type": response.json()["account"]["type"],
-                        # "user": user,
                         "user_bvn": response.json()["account"]["bvn"]}
                 print(data)
                 serializer = List_AccountSerializer(data = data)
