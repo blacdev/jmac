@@ -92,7 +92,8 @@ def UserExchangeAPIView(request):
 def UserInfoAPIView(request, id, user_id):
 
     if request.method == "GET":
-        data = {"id": id}
+        data = {"id": id,
+                "user_id": user_id}
         serializer = MonoUserInformationSerializer(data = data) 
 
         if serializer.is_valid(raise_exception=True):
