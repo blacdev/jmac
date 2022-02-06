@@ -4,14 +4,12 @@ Jmac is a web application that maeks use of MONO API to allow users bring all th
 
 ## Installation
 
-Run "pip install -r requirements.txt" to install all necessary packages required for the project.
+Run ```pip install -r requirements.txt``` to install all necessary packages required for the project.
 
-```bash
-pip install foobar
-```
+
 
 ## Usage
-visit jmac-test.herokuapp.com to see all available endpoints
+visit ```jmac-test.herokuapp.com``` to see all available endpoints
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
